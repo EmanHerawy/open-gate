@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
-import ConnectButton from './ConnectWallet'
+import GithubLogin from './GithubLogin'
 
 export default function Topbar() {
   return (
@@ -18,7 +18,8 @@ export default function Topbar() {
 
         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
 
-        <ConnectButton />
+        {/* <ConnectButton /> */}
+        <GithubLogin />
       </Toolbar>
     </AppBar>
   )
