@@ -4,6 +4,32 @@ import Grid from '@mui/material/Unstable_Grid2'
 import MediaCard from '@/components/MediaCard'
 import Typography from '@mui/material/Typography'
 
+const projects = [
+  {
+    title: 'Solidity',
+    url: 'https://github.com/ethereum/solidity',
+    description:
+      'Solidity is a statically-typed curly-braces programming language designed for developing smart contracts that run on the Ethereum Virtual Machine. Smart contracts are programs that are executed inside a peer-to-peer network where nobody has special authority over the execution, and thus they allow anyone to implement tokens of value, ownership, voting, and other kinds of logic.',
+  },
+  {
+    title: 'React',
+    url: 'https://github.com/facebook/react',
+    description:
+      'React is a JavaScript library for building user interfaces. React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes. Declarative views make your code more predictable, simpler to understand, and easier to debug.',
+  },
+  {
+    title: 'Vuejs',
+    url: 'https://github.com/vuejs/vue',
+    description:
+      'Vue (pronounced /vjuː/, like view) is a progressive framework for building user interfaces. It is designed from the ground up to be incrementally adoptable, and can easily scale between a library and a framework depending on different use cases. It consists of an approachable core library that focuses on the view layer only, and an ecosystem of supporting libraries that helps you tackle complexity in large Single-Page Applications.',
+  },
+  {
+    title: 'Vue carousel',
+    url: 'https://github.com/ismail9k/vue3-carousel',
+    description:
+      'The CMYK color model (also known as process color, or four color) is a subtractive color model, based on the CMY color model, used in color printing, and is also used to describe the printing process itself.',
+  },
+]
 export default function HomePage() {
   return (
     <Box>
@@ -14,30 +40,11 @@ export default function HomePage() {
       </Box>
       <div>
         <Grid container rowSpacing={3} columnSpacing={3}>
-          <Grid xs={6}>
-            <MediaCard
-              heading="CMYK"
-              text="The CMYK color model (also known as process color, or four color) is a subtractive color model, based on the CMY color model, used in color printing, and is also used to describe the printing process itself."
-            />
-          </Grid>
-          <Grid xs={6}>
-            <MediaCard
-              heading="HSL and HSV"
-              text="HSL (for hue, saturation, lightness) and HSV (for hue, saturation, value; also known as HSB, for hue, saturation, brightness) are alternative representations of the RGB color model, designed in the 1970s by computer graphics researchers."
-            />
-          </Grid>
-          <Grid xs={6}>
-            <MediaCard
-              heading="RGB"
-              text="An RGB color space is any additive color space based on the RGB color model. RGB color spaces are commonly found describing the input signal to display devices such as television screens and computer monitors."
-            />
-          </Grid>
-          <Grid xs={6}>
-            <MediaCard
-              heading="CIELAB"
-              text="The CIELAB color space, also referred to as L*a*b*, was intended as a perceptually uniform space, where a given numerical change corresponds to a similar perceived change in color."
-            />
-          </Grid>
+          {projects.map((project) => (
+            <Grid xs={6} key={project.title}>
+              <MediaCard heading={project.title} text={project.description} />
+            </Grid>
+          ))}
         </Grid>
       </div>
     </Box>
