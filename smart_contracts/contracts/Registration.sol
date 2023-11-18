@@ -47,8 +47,15 @@ contract Registration is Pausable, Ownable {
 
  function IsProjectCreatorRegistered(address creatorAddress) public view returns(bool){
      return creatorRegistratedTime[creatorAddress]!=0;}
-     
     // leave 
+    function getDeveloperGithub(address dev) public view returns(
+        string memory githubUsername
+    ){
+        return addressToGithub[dev];
+    }
+    function getDeveloperAddress(string memory githubUsername) public view returns( address){
+        return githubToAddress[githubUsername];
+    }
 
 
     function pause() public onlyOwner {
