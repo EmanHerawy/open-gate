@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 
-export default function GithubLogin() {
+export default function GithubLogin(props) {
   const { data: session } = useSession()
 
   const [anchorEl, setAnchorEl] = useState(null)
@@ -29,6 +29,7 @@ export default function GithubLogin() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
+          {...props}
         >
           <Box display="flex" alignItems="center" gap={2}>
             <Avatar alt={session.user.name} src={session.user.image} />

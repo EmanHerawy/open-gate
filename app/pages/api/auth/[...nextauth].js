@@ -11,6 +11,14 @@ export const authOptions = {
         url: 'https://github.com/login/oauth/authorize',
         params: { scope: 'repo read:user user:email' },
       },
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        }
+      },
     }),
   ],
   callbacks: {

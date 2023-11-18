@@ -23,7 +23,7 @@ const PLACEHOLDER_LINKS = [
   { text: 'Settings', icon: SettingsIcon },
   { text: 'Logout', icon: LogoutIcon },
 ]
-export default function ({ width }) {
+export default function Sidebar({ width }) {
   return (
     <Drawer
       sx={{
