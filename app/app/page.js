@@ -1,8 +1,11 @@
+'use client'
+
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Unstable_Grid2'
 import MediaCard from '@/components/MediaCard'
 import Typography from '@mui/material/Typography'
+import AddProjectModal from '@/components/AddProjectModal'
 
 const projects = [
   {
@@ -42,11 +45,21 @@ export default function HomePage() {
         <Grid container rowSpacing={3} columnSpacing={3}>
           {projects.map((project) => (
             <Grid xs={6} key={project.title}>
-              <MediaCard heading={project.title} text={project.description} />
+              <MediaCard
+                heading={project.title}
+                text={project.description}
+                url={project.url}
+              />
             </Grid>
           ))}
         </Grid>
       </div>
+
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <AddProjectModal />
+      </Box>
     </Box>
   )
 }

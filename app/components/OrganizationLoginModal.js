@@ -1,7 +1,6 @@
 import Button from '@mui/material/Button'
 
 import {
-  useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,

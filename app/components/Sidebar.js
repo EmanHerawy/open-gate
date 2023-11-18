@@ -8,10 +8,8 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Drawer from '@mui/material/Drawer'
 import HomeIcon from '@mui/icons-material/Home'
-import StarIcon from '@mui/icons-material/Star'
 import ChecklistIcon from '@mui/icons-material/Checklist'
 import SettingsIcon from '@mui/icons-material/Settings'
-import SupportIcon from '@mui/icons-material/Support'
 import LogoutIcon from '@mui/icons-material/Logout'
 
 const LINKS = [
