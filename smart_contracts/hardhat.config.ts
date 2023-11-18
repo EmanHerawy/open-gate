@@ -3,7 +3,8 @@ import '@nomicfoundation/hardhat-toolbox';
 import '@nomiclabs/hardhat-ethers';
 import '@openzeppelin/hardhat-upgrades';
 import '@nomiclabs/hardhat-etherscan';
-
+import 'hardhat-deploy';
+import 'hardhat-deploy-ethers';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -16,7 +17,11 @@ const settings = {
   },
 };
 const config: HardhatUserConfig = {
+    namedAccounts: {
+    deployer: 0,
+  },
   solidity: {
+
     compilers: [
       {
         version: '0.8.18',
@@ -36,6 +41,7 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: 'https://polygon-mumbai.g.alchemy.com/v2/tCbwTAqlofFnmbVORepuHNcsrjNXWdRJ',
       accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
     },
   },
   defaultNetwork: 'mumbai',
@@ -44,10 +50,13 @@ const config: HardhatUserConfig = {
   },
   paths: {
     sources: './contracts',
+    deploy: 'deploy',
+    deployments: 'deployments',
     tests: './test',
     cache: './cache',
     artifacts: './build/artifacts',
   },
+  
 };
 
 export default config;
