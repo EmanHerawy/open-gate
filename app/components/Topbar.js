@@ -7,7 +7,8 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import GithubLogin from './GithubLogin'
 import ConnectWallet from './ConnectWallet'
-import LoginModal from './LoginModal'
+import DeveloperLoginModal from './DeveloperLoginModal'
+import OrganizationLoginModal from './OrganizationLoginModal'
 import { useSession } from 'next-auth/react'
 
 import { useAccount } from 'wagmi'
@@ -16,13 +17,13 @@ export default function Topbar() {
   const { data: session } = useSession()
   const { isConnected } = useAccount()
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   return (
     <AppBar position="fixed" sx={{ zIndex: 2000 }}>
-      <LoginModal onClose={handleClose} open={open} />
+      <DeveloperLoginModal onClose={handleClose} open={open} />
 
       <Toolbar sx={{ backgroundColor: 'background.paper' }}>
         <DashboardIcon
@@ -41,9 +42,7 @@ export default function Topbar() {
           </>
         ) : (
           <>
-            <Button onClick={handleOpen} disabled={true}>
-              Login As Organization
-            </Button>
+            <OrganizationLoginModal />
             <Button onClick={handleOpen}>Login As Developer</Button>
           </>
         )}
