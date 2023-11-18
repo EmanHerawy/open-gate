@@ -1,84 +1,53 @@
-import { HardhatUserConfig } from "hardhat/config";
-// import * as dotenvenc from '@chainlink/env-enc'
-import dotenv from 'dotenv'
-import "@nomicfoundation/hardhat-toolbox";
-require("@nomicfoundation/hardhat-toolbox")
-require("hardhat-contract-sizer")
-require("@openzeppelin/hardhat-upgrades")
-// require("./tasks")
-dotenv.config()
-const { networks } = require("./networks")
+import { HardhatUserConfig } from 'hardhat/config';
+import '@nomicfoundation/hardhat-toolbox';
+import '@nomiclabs/hardhat-ethers';
+import '@openzeppelin/hardhat-upgrades';
+import '@nomiclabs/hardhat-etherscan';
 
-// Enable gas reporting (optional)
-const REPORT_GAS = process.env.REPORT_GAS?.toLowerCase() === "true" ? true : false
+import dotenv from 'dotenv';
+dotenv.config();
 
-const SOLC_SETTINGS = {
+import './tasks/index.ts';
+
+const settings = {
   optimizer: {
     enabled: true,
     runs: 1_000,
   },
-}
+};
 const config: HardhatUserConfig = {
-   defaultNetwork: "hardhat",
   solidity: {
     compilers: [
       {
-        version: "0.8.7",
-        settings: SOLC_SETTINGS,
+        version: '0.8.18',
+        settings,
       },
       {
-        version: "0.7.0",
-        settings: SOLC_SETTINGS,
+        version: '0.7.6',
+        settings,
       },
       {
-        version: "0.6.6",
-        settings: SOLC_SETTINGS,
-      },
-      {
-        version: "0.4.24",
-        settings: SOLC_SETTINGS,
+        version: '0.4.24',
+        settings,
       },
     ],
   },
   networks: {
-    hardhat: {
-      allowUnlimitedContractSize: true,
-      accounts: process.env.PRIVATE_KEY
-        ? [
-            {
-              privateKey: process.env.PRIVATE_KEY,
-              balance: "10000000000000000000000",
-            },
-          ]
-        : [],
+    mumbai: {
+      url: 'https://polygon-mumbai.g.alchemy.com/v2/tCbwTAqlofFnmbVORepuHNcsrjNXWdRJ',
+      accounts: [process.env.PRIVATE_KEY || ''],
     },
-    ...networks,
   },
+  defaultNetwork: 'mumbai',
   etherscan: {
-    // npx hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
-    // to get exact network names: npx hardhat verify --list-networks
-    apiKey: {
-      sepolia: networks.ethereumSepolia.verifyApiKey,
-      polygonMumbai: networks.polygonMumbai.verifyApiKey,
-      avalancheFujiTestnet: networks.avalancheFuji.verifyApiKey,
-    },
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
-  gasReporter: {
-    enabled: REPORT_GAS,
-    currency: "USD",
-    outputFile: "gas-report.txt",
-    noColors: true,
-  },
- 
   paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./build/cache",
-    artifacts: "./build/artifacts",
-  },
-  mocha: {
-    timeout: 200000, // 200 seconds max for running tests
+    sources: './contracts',
+    tests: './test',
+    cache: './cache',
+    artifacts: './build/artifacts',
   },
 };
 
-
+export default config;
