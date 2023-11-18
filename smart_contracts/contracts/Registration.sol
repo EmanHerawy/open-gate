@@ -11,11 +11,11 @@ contract Registration is Pausable, Ownable {
 
     mapping (string=>address) public  githubToAddress;
     mapping (address=>string) public addressToGithub;
-    mapping (address=>bool) public isOpenSourceProjectCreator;
+    mapping (address=>uint256) public creatorRegistratedTime;
     IERC20 daoToken;
     uint256 public blanceToJoin;
-    constructor(address tokenId , uint256 _blanceToJoin)  {
-        daoToken = IERC20(tokenId);
+    constructor(address token , uint256 _blanceToJoin)  {
+        daoToken = IERC20(token);
         require(_blanceToJoin>10,"balance must be greater than 10");
         blanceToJoin = _blanceToJoin;
     }
@@ -38,14 +38,16 @@ contract Registration is Pausable, Ownable {
     // later we need to handle case of creator manipulating the contract by selling the token after joining 
 
     function joinAsOpenSourceProjectCreator() public  whenNotPaused{
-        require(! isOpenSourceProjectCreator[msg.sender], "already registered as open source project creator");
+        require(creatorRegistratedTime[msg.sender]!=0, "already registered as open source project creator");
       /// make sure creator is qualified to join
         require(daoToken.balanceOf(msg.sender) >= blanceToJoin, "not enough balance to join");
-        isOpenSourceProjectCreator[msg.sender] = true;
+        creatorRegistratedTime[msg.sender] = block.timestamp;
         emit CreatorRegistered(msg.sender);
     }
 
-
+ function IsProjectCreatorRegistered(address creatorAddress) public view returns(bool){
+     return creatorRegistratedTime[creatorAddress]!=0;}
+     
     // leave 
 
 
