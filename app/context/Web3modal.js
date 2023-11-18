@@ -3,7 +3,7 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 
 import { WagmiConfig } from 'wagmi'
-import { polygonMumbai } from 'viem/chains'
+import { polygonMumbai, avalancheFuji } from 'viem/chains'
 
 // 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
@@ -16,7 +16,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-const chains = [polygonMumbai]
+const chains = [avalancheFuji]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 // 3. Create modal

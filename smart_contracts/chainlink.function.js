@@ -1,13 +1,13 @@
-const prUrl = args[0];
+const repo = args[0];
+const prNum = args[1];
 const token = secrets.token; 
 
 if (!token) {
   throw Error("Missing secret: github token");
 }
 
-const getPrDetailsUrl = prUrl
-  .replace("https://github.com/", "https://api.github.com/repos/")
-  .replace("pull", "pulls");
+const getPrDetailsUrl = `${repo
+  .replace("https://github.com/", "https://api.github.com/repos/")}/pulls/${prNum}`
 
 const headers = {
   Authorization: `token ${token}`,

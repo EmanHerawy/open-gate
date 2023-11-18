@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 
 import Box from '@mui/material/Box'
@@ -20,40 +20,55 @@ const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
 
 export default function LoginModal({ onClose, open }) {
   const { data: session } = useSession()
+  const { isConnected } = useAccount()
 
   const joinConfig = usePrepareContractWrite({
     address: contractAddress,
     abi: registrationContract.abi,
     functionName: 'joinAsContributor',
-    args: ['ismail9k'],
+    args: [session?.user.name],
   })
 
+  if (joinConfig.error) {
+    console.error(joinConfig.error)
+  }
+
   const joinAction = useContractWrite(joinConfig.config)
+
+  if (joinAction.error) {
+    console.error(joinAction.error)
+  }
 
   useWaitForTransaction({
     hash: joinAction.data?.hash,
     onSuccess() {
-      console.log('d')
+      onClose()
     },
     onError(e) {
       console.log(e)
+      onClose()
     },
   })
 
   const handleSmartContractRegister = async (type) => {
     try {
-      const res = await joinAction.write?.()
-      console.log('res', res)
-      // Handle successful transaction
+      await joinAction.write?.()
+      onClose()
     } catch (error) {
-      // Handle errors
       console.error(error)
     }
   }
 
+  useEffect(() => {
+    if (session && isConnected) {
+      handleSmartContractRegister()
+    }
+  }, [session, isConnected])
+
   return (
     <>
       <Modal
+        sx={{ zIndex: 2 }}
         open={open}
         onClose={onClose}
         aria-labelledby="modal-modal-title"
@@ -63,15 +78,6 @@ export default function LoginModal({ onClose, open }) {
           <Box>
             <ConnectWallet />
             <GithubLogin />
-          </Box>
-
-          <Box>
-            <Button onClick={() => handleSmartContractRegister('organzine')}>
-              Login as organzine
-            </Button>
-            <Button onClick={() => handleSmartContractRegister('organzine')}>
-              Login as developer
-            </Button>
           </Box>
         </Box>
       </Modal>
