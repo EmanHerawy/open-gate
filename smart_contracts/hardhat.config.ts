@@ -43,6 +43,11 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY || ''],
       saveDeployments: true,
     },
+    fuji: {
+      url: 'https://api.avax-test.network/ext/bc/C/rpc',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
   },
   defaultNetwork: 'mumbai',
   etherscan: {
