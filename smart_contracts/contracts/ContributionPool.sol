@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import "./Registration.sol";
 
 /// This contract should handle the relation between open source project creator and open source project contributors.
 /// personas : 
@@ -12,5 +12,23 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract ContributionPool {
 
 
+    mapping (address=>Listing) CreatorListings;
 
+    struct Listing{
+        uint256 listingId;
+        string githubRepo;
+        uint256 currentDeposit;
+        uint256 payableAmount;
+            }
+    function listRepo (string memory githubRepo, uint256 payableAmount) public payable {
+        require(Registration(msg.sender).IsProjectCreatorRegistered(msg.sender),"not registered as project creator");
+        require(CreatorListings[msg.sender].listingId==0,"already listed");
+        CreatorListings[msg.sender] = Listing(block.timestamp,githubRepo,msg.value,payableAmount);
+    }
+
+
+
+    event ListingCreated(uint256 listingId, string githubRepo, uint256 deposit, uint256 payableAmount);
+
+    
 }
