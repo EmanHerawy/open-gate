@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry'
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
+import { Web3Modal } from '../context/Web3Modal'
 
 export const metadata = {
   title: 'Open Gate',
@@ -17,21 +18,23 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <Topbar />
-          <Sidebar width={DRAWER_WIDTH} />
+          <Web3Modal>
+            <Topbar />
+            <Sidebar width={DRAWER_WIDTH} />
 
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              bgcolor: 'background.default',
-              ml: `${DRAWER_WIDTH}px`,
-              mt: ['48px', '56px', '64px'],
-              p: 3,
-            }}
-          >
-            {children}
-          </Box>
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                bgcolor: 'background.default',
+                ml: `${DRAWER_WIDTH}px`,
+                mt: ['48px', '56px', '64px'],
+                p: 3,
+              }}
+            >
+              {children}
+            </Box>
+          </Web3Modal>
         </ThemeRegistry>
       </body>
     </html>

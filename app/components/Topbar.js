@@ -2,6 +2,8 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import ConnectButton from './ConnectWallet'
 
 export default function Topbar() {
   return (
@@ -13,6 +15,10 @@ export default function Topbar() {
         <Typography variant="h6" noWrap component="div" color="white">
           Open Gate
         </Typography>
+
+        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
+
+        <ConnectButton />
       </Toolbar>
     </AppBar>
   )
