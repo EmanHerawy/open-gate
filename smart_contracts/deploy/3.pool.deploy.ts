@@ -13,7 +13,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const bugbounty = 2;
       const _checkLogic=`const repo = args[0];
 const prNum = args[1];
-const token = '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'; 
+const token = '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'; 
 
 if (!token) {
   throw Error("Missing secret: github token");
@@ -27,7 +27,6 @@ const headers = {
   Accept: "application/vnd.github.mockingbird-preview",
 };
 
-// Get the timeline to find the closing PR
 let apiResponse = await Functions.makeHttpRequest({ url: getPrDetailsUrl, headers });
 
 
