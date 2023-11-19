@@ -1,0 +1,163 @@
+
+
+
+// events go here
+
+     struct Approval {
+        #indexed
+       pub owner: address
+        #indexed
+      pub  spender: address
+      
+      pub  value: u256
+    }
+    pub struct Transfer {
+        #indexed
+       pub from: address
+        #indexed
+       pub to: address
+       pub value: u256
+    }
+
+
+
+
+    ///// contract trait goes here /////
+    trait ERC20 {
+        fn total_supply() -> u256;
+        fn balance_of(owner: address) -> u256;
+        fn allowance(owner: address, spender: address) -> u256;
+        fn transfer(to: address, value: u256) -> bool;
+        fn approve(spender: address, value: u256) -> bool;
+        fn transfer_from(from: address, to: address, value: u256) -> bool;
+
+    }
+
+//  impl ERC20 for Main{
+//     fn total_supply() -> u256;
+//         fn balance_of(owner: address) -> u256;
+//         fn allowance(owner: address, spender: address) -> u256;
+//         fn transfer(to: address, value: u256) -> bool;
+//         fn approve(spender: address, value: u256) -> bool;
+//         fn transfer_from(from: address, to: address, value: u256) -> bool;
+//         }
+
+
+
+contract Main {
+///// contract state variables /////
+        owner:address
+        balances: Map<address,u256>
+        allowances:Map<address, Map<address, u256>>
+        total_supply:u256
+        max_supply:u256
+        // The String<N> type is generic over a constant value that has to be an integer literal.
+        symbol:String<5>
+        name:String<50>
+        decimal:u8
+        
+///// constructor goes here
+  // constructor
+    pub fn __init__(mut self, ctx: Context) {
+        self.owner = ctx.msg_sender()
+        self.name = "Test Token"
+        self.symbol = "TT"
+        self.decimal = 18
+    }
+
+///// contract functions go here /////
+        pub fn name(self)->String<50>{
+            return self.name.to_mem()
+        }
+        pub fn owner(self)->address{
+            return self.owner
+        }
+        pub fn symbol(self)->String<5>{
+            return self.symbol.to_mem()
+        }
+        pub fn decimals(self)->u8{
+            return self.decimal
+        }
+
+       pub fn total_supply(self) -> u256{
+            return self.total_supply
+        }
+       pub fn balance_of(self,owner: address) -> u256{
+            return self.balances[owner]
+        }
+       pub fn allowance(self,owner: address, spender: address) -> u256{
+            return self.allowances[owner][spender]
+        }
+        
+
+      pub  fn transfer(mut self,mut ctx: Context, to: address, value: u256) -> bool{
+            let sender:address = ctx.msg_sender()
+            let sender_balance:u256 = self.balance_of(owner:sender)
+            if sender_balance < value {
+                return false
+            }
+            self.balances[sender] = sender_balance - value
+            self.balances[to] = self.balance_of(owner:to) + value
+            ctx.emit(Transfer(from:sender, to, value))
+            return true
+        }
+        pub  fn approve(mut self,mut ctx: Context, spender: address, value: u256) -> bool{
+                let sender:address = ctx.msg_sender()
+                self.allowances[sender][spender] = value
+                ctx.emit(Approval(owner:sender, spender, value))
+                return true
+            }
+    pub fn transfer_from(mut self,mut ctx: Context, from: address, to: address, value: u256) -> bool{
+                let sender:address = ctx.msg_sender()
+                let sender_allowance:u256 = self.allowance(owner:from, spender:sender)
+                if sender_allowance < value {
+                    return false
+                }
+                let from_balance:u256 = self.balance_of(owner:from)
+                if from_balance < value {
+                    return false
+                }
+                self.allowances[from][sender] = sender_allowance - value
+                self.balances[from] = from_balance - value
+                self.balances[to] = self.balance_of(owner:to) + value
+                ctx.emit(Transfer(from, to, value))
+                return true
+            }
+            pub fn mint(mut self,mut ctx: Context, to: address, value: u256) -> bool{
+                let sender:address = ctx.msg_sender()
+                if sender != self.owner {
+                    return false
+                }
+                let to_balance:u256 = self.balance_of(owner:to)
+                self.balances[to] = to_balance + value
+                self.total_supply = self.total_supply + value
+                ctx.emit(Transfer(from:address(0), to, value))
+                return true
+            }
+
+
+            // functions are pyable by default
+         pub fn buy(mut self,mut ctx: Context, to: address) -> bool{
+                let sender:address = ctx.msg_sender()
+                let value:u256 = ctx.msg_value()
+                // minimum value is 10 
+                if value < 10{
+                    revert
+                }
+               self._mint(ctx,to:sender, value)
+                return true
+            }
+
+            /// private functions go here 
+        fn _mint (mut self,mut ctx: Context, to: address, value: u256)-> bool{
+             let to_balance:u256 = self.balance_of(owner:to)
+                self.balances[to] = to_balance + value
+                self.total_supply = self.total_supply + value
+                ctx.emit(Transfer(from:address(0), to, value))
+                return true
+        }
+
+        
+
+}
+
