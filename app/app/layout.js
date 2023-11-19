@@ -9,7 +9,7 @@ import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
 import { SessionProvider } from 'next-auth/react'
 
-import { Web3Modal } from '../context/Web3Modal'
+import { Web3Modal } from '@/context/Web3modal'
 
 // export const metadata = {
 //   title: 'Open Gate',
