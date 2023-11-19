@@ -8,8 +8,8 @@ Open Gate is a tool specifically designed for Decentralized Autonomous Organizat
 
 ### For Maintainers
 
-- **Developer Login**: Seamlessly log in using your developer credentials.
-- **Integration**: Connect your GitHub account and crypto wallet to the platform.
+- **Developer Login**: Seamlessly log in using your Github account.
+- **Integration**: Connect your crypto wallet to the platform.
 - **Project Engagement**: Apply to contribute to open-source projects of your choice.
 - **Reward Claims**: Upon successful pull request acceptance, conveniently claim your rewards.
 
