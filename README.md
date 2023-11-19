@@ -2,12 +2,26 @@
 
 ## Introduction
 
-Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations (DAOs) by offering a tailored solution for permissioned access. Leveraging Proof-of-Work principles, it fosters a seamless, inclusive environment for token-gated communities. Our mission is to seamlessly bridge the divide between open-source contributions and equitable reward systems, catalyzing an engaged, diverse ecosystem.
+Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations (DAOs) by offering a tailored solution for permissioned access. Leveraging Proof of Contribution, it fosters a seamless, inclusive environment for token-gated communities. Our mission is to seamlessly bridge the divide between open-source contributions and equitable reward systems, catalyzing an engaged, diverse ecosystem.
+
+## Challenges Addressed
+
+1. **Accessibility in Token-Gated DAOs**:
+   - **Issue**: Token-gated access in DAOs often excludes underrepresented communities and can be financially prohibitive for many developers.
+   - **Impact**: This affects diversity and inclusivity, creating barriers to entry for a significant portion of potential contributors.
+
+2. **Incentivization in Open-Source Communities**:
+   - **Issue**: A prevalent lack of tangible rewards and recognition in open-source projects leads to diminished motivation for contributors.
+   - **Impact**: This deficit in incentives results in slower project progression, reduced innovation, and challenges in maintaining a consistent contributor base.
+
+3. **Community Engagement in DAOs**:
+   - **Issue**: Many DAOs struggle to foster active, engaged communities, partly due to limited interaction channels and a lack of shared goals or rewards.
+   - **Impact**: Weak community engagement can lead to a decline in collective decision-making, reduced innovation, and a lower sense of belonging among members.
 
 ## Overview
 
 - **Target Users**: Enthusiastic Contributors and Open-source Project Owners.
-- **Key Features**: 
+- **Key Features**:
   - Instant payment per contributions.
   - Trustless connections ensuring security and reliability.
   - Multi-chain support, enhancing versatility.
