@@ -111,6 +111,28 @@ npm run dev
 - [Walletconnect](https://ethglobal.com/events/istanbul/prizes#walletconnect)
 - [MetaMask](https://ethglobal.com/events/istanbul/prizes#metamask)
 
+## Future Work
+
+1. **Improved User Experience (UX) and User Journey**:
+   - We are dedicated to refining the user interface and journey to make it more intuitive, engaging, and user-friendly. This involves redesigning navigation flows, simplifying processes, and introducing interactive elements to guide users smoothly through their tasks, whether they are contributing to a project or managing one.
+
+2. **Meta-Transactions**:
+   - To streamline interactions with the blockchain, we plan to implement meta-transactions. This will allow users to perform transactions on the blockchain without requiring them to hold native cryptocurrency for transaction fees, significantly lowering the entry barrier for new users.
+
+3. **On-Chain Identity Tide with User Credentials**:
+   - As part of our forward-looking development strategy, we plan to integrate a robust on-chain identity system tied with user credentials. This initiative aims to redefine how users interact and establish trust within the platform.
+
+4. **Collaborative Community Hub**:
+   - **Integrated Networking and Job Opportunities**: A networking section will be added for collaboration and job opportunities, connecting developers with projects and roles that match their skills.
+   - **Community Forums**: These will serve as platforms for knowledge exchange, discussions, and community support, enriching the collaborative spirit of the ecosystem.
+
+5. **Privacy and Security Innovations**:
+   - **zkEmail and SBT Integration**: Implementing zkEmail for GitHub account proofs and minting SBTs for secure public key registration.
+   - **Private Payment Options**: Introducing private payment systems to maintain the confidentiality of developer transactions.
+
+6. **Automated Pull Request Tracking**:
+   - Utilizing Chainlink's automation functions, we aim to automate the tracking and verification of pull requests, thereby enhancing the efficiency of contribution recognition and reward distribution.
+
 ## License
 
 MIT
