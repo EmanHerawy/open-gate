@@ -38,7 +38,6 @@ if (apiResponse.error) {
 
 const { data } = apiResponse;
 
-console.log("API response data:", JSON.stringify(data, null, 2));
 
 const { merged, user, created_at } = data;
 
