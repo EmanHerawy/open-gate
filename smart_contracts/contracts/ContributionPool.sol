@@ -41,7 +41,6 @@ contract ContributionPool  is  Ownable, FunctionsClient{
   event Claimed(uint amount, address by);
 
   constructor(address oracle, address _registration, address _token,uint64 _subscriptionId,  string memory _checkLogic) FunctionsClient(oracle) {
-        setOracle(oracle);
     checkLogic = _checkLogic;
     registration = Registration(_registration);
     token = DAOToken(_token);
