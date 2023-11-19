@@ -38,7 +38,7 @@ contract Registration is Pausable, Ownable {
     // later we need to handle case of creator manipulating the contract by selling the token after joining 
 
     function joinAsOpenSourceProjectCreator() public  whenNotPaused{
-        require(creatorRegistratedTime[msg.sender]!=0, "already registered as open source project creator");
+        require(creatorRegistratedTime[msg.sender]==0, "already registered as open source project creator");
       /// make sure creator is qualified to join
         require(daoToken.balanceOf(msg.sender) >= blanceToJoin, "not enough balance to join");
         creatorRegistratedTime[msg.sender] = block.timestamp;
