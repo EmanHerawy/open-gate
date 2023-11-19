@@ -43,7 +43,7 @@ console.log("API response data:", JSON.stringify(data, null, 2));
 const { merged, user, created_at } = data;
 
 if (!merged) {
-  throw new Error('Pull request #' + prNumber + 'is not merged or could be closed');
+  throw new Error('Pull request #' + prNum + 'is not merged or could be closed');
 }
 
 return Functions.encodeString(JSON.stringify({
