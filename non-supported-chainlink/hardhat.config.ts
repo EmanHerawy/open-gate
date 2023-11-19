@@ -42,7 +42,12 @@ const config: HardhatUserConfig = {
       saveDeployments: true,
     },
        scroll: {
-      url: 'hhttps://scroll-sepolia.public.blastapi.io',
+      url: 'https://sepolia-rpc.scroll.io/',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
+       mantel: {
+      url: 'https://pacific-rpc.manta.network/http		',
       accounts: [process.env.PRIVATE_KEY || ''],
       saveDeployments: true,
     },
