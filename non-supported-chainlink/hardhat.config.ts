@@ -41,6 +41,31 @@ const config: HardhatUserConfig = {
      hardhat: {
       saveDeployments: true,
     },
+       scroll: {
+      url: 'hhttps://scroll-sepolia.public.blastapi.io',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
+       neonevm: {
+      url: 'https://proxy.devnet.neonlabs.org/solana	',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
+       zksync: {
+      url: 'https://zksync-era-testnet.blockpi.network/v1/rpc/public	',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
+        calibrationnet: {
+            chainId: 314159,
+            url: "https://api.calibration.node.glif.io/rpc/v1",
+            accounts: [process.env.PRIVATE_KEY || ''],
+        },
+    linea: {
+      url: 'https://rpc.goerli.linea.build',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
     mumbai: {
       url: 'https://polygon-mumbai.g.alchemy.com/v2/tCbwTAqlofFnmbVORepuHNcsrjNXWdRJ',
       accounts: [process.env.PRIVATE_KEY || ''],

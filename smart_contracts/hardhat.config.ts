@@ -38,6 +38,16 @@ const config: HardhatUserConfig = {
     ],
   },
   networks: {
+    scroll: {
+      url: 'https://scroll-sepolia.blockpi.network/v1/rpc/public',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
+    linea: {
+      url: 'https://rpc.goerli.linea.build',
+      accounts: [process.env.PRIVATE_KEY || ''],
+      saveDeployments: true,
+    },
     mumbai: {
       url: 'https://polygon-mumbai.g.alchemy.com/v2/tCbwTAqlofFnmbVORepuHNcsrjNXWdRJ',
       accounts: [process.env.PRIVATE_KEY || ''],
