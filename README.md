@@ -122,16 +122,16 @@ npm run dev
 3. **On-Chain Identity Tide with User Credentials**:
    - As part of our forward-looking development strategy, we plan to integrate a robust on-chain identity system tied with user credentials. This initiative aims to redefine how users interact and establish trust within the platform.
 
-4. **Collaborative Community Hub**:
-   - **Integrated Networking and Job Opportunities**: A networking section will be added for collaboration and job opportunities, connecting developers with projects and roles that match their skills.
-   - **Community Forums**: These will serve as platforms for knowledge exchange, discussions, and community support, enriching the collaborative spirit of the ecosystem.
-
-5. **Privacy and Security Innovations**:
+4. **Privacy and Security Innovations**:
    - **zkEmail and SBT Integration**: Implementing zkEmail for GitHub account proofs and minting SBTs for secure public key registration.
    - **Private Payment Options**: Introducing private payment systems to maintain the confidentiality of developer transactions.
 
-6. **Automated Pull Request Tracking**:
+5. **Automated Pull Request Tracking**:
    - Utilizing Chainlink's automation functions, we aim to automate the tracking and verification of pull requests, thereby enhancing the efficiency of contribution recognition and reward distribution.
+
+6. **Collaborative Community Hub**:
+   - **Integrated Networking and Job Opportunities**: A networking section will be added for collaboration and job opportunities, connecting developers with projects and roles that match their skills.
+   - **Community Forums**: These will serve as platforms for knowledge exchange, discussions, and community support, enriching the collaborative spirit of the ecosystem.
 
 ## License
 
