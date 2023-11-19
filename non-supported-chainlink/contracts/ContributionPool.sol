@@ -51,7 +51,7 @@ contract ContributionPool  is  Ownable{
     }
 
 
-  /// @notice Can be called by maintainers to claim donations made to their repositories
+  /// @notice Can be called by contributor to request fund
   function claim(string calldata repo, string  calldata prUrl ) public {
     ///  check balance to make sure that project creators don't sepend more than the deposit
     require(CreatorListings[githubToCreatorAddress[repo]].currentDeposit >= CreatorListings[githubToCreatorAddress[repo]].payableAmount,"not enough balance to pay");
@@ -64,8 +64,8 @@ contract ContributionPool  is  Ownable{
   }
 
   
-     /// @notice Finalizes the claim process after Chainlink Functions has finished the authentication
-  function finalizeClaim(string memory _login, string memory githubIssue, uint256 bountyAmount ) internal {
+     /// @notice Finalizes the claim process by the creator to fun the contributor
+  function finalizeClaim(string memory _login, string memory githubIssue, uint256 bountyAmount ) public {
 // get address of github handle
     address devAddress= registration.getDeveloperAddress(_login);
     usedRequests[githubIssue] = true;
