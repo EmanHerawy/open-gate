@@ -1,187 +1,56 @@
 contract;
-/*   
-    ███████╗██╗    ██╗ █████╗ ██╗   ██╗     ██████╗  █████╗ ███╗   ██╗ ██████╗ 
-    ██╔════╝██║    ██║██╔══██╗╚██╗ ██╔╝    ██╔════╝ ██╔══██╗████╗  ██║██╔════╝ 
-    ███████╗██║ █╗ ██║███████║ ╚████╔╝     ██║  ███╗███████║██╔██╗ ██║██║  ███╗
-    ╚════██║██║███╗██║██╔══██║  ╚██╔╝      ██║   ██║██╔══██║██║╚██╗██║██║   ██║
-    ███████║╚███╔███╔╝██║  ██║   ██║       ╚██████╔╝██║  ██║██║ ╚████║╚██████╔╝
-    ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝        ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝                                                                         
-*/
 
-use std::{
-    address::*,
-    auth::{
-        AuthError,
-        msg_sender,
-    },
-    call_frames::{contract_id, msg_asset_id},
-    context::{balance_of, msg_amount},
-    contract_id::ContractId,
-    revert::require,
-    storage::*,
-    token::*,
-};
+use std::{constants::ZERO_B256, context::*, token::*};
 
-abi Token {
-    // Initialize contract
-    #[storage(read, write)]
-    fn initialize(config: TokenInitializeConfig, mint_amount: u64, address: Address);
-    // Set mint amount for each address
-    #[storage(read, write)]
-    fn set_mint_amount(mint_amount: u64);
-    // Get balance of the contract coins
-    fn get_balance() -> u64;
-    // Return the mint amount
-    #[storage(read)]
-    fn get_mint_amount() -> u64;
-    // Get balance of a specified token on contract
-    fn get_token_balance(asset_id: ContractId) -> u64;
-    // Mint token coins
-    #[storage(read)]
+abi NativeAssetToken {
     fn mint_coins(mint_amount: u64);
-    // Burn token coins
-    #[storage(read)]
     fn burn_coins(burn_amount: u64);
-    // Transfer a contract coins to a given output
-    #[storage(read)]
-    fn transfer_coins(coins: u64, address: Address);
-    // Transfer a specified token from the contract to a given output
-    #[storage(read)]
-    fn transfer_token_to_output(coins: u64, asset_id: ContractId, address: Address);
-    // Method called from address to mint coins
-    #[storage(read, write)]
-    fn mint();    
-    // Config of token
-    #[storage(read)]
-    fn config() -> TokenInitializeConfig;
-    // Is user already minted test token
-    #[storage(read)]
-    fn already_minted(address: Address) -> bool;
+    fn force_transfer_coins(coins: u64, asset_id: AssetId, target: ContractId);
+    fn transfer_coins_to_output(coins: u64, asset_id: AssetId, recipient: Address);
+    fn deposit();
+    fn get_balance(target: ContractId, asset_id: AssetId) -> u64;
+    fn mint_and_send_to_contract(amount: u64, destination: ContractId);
+    fn mint_and_send_to_address(amount: u64, recipient: Address);
 }
 
-const ZERO_B256 = 0x0000000000000000000000000000000000000000000000000000000000000000;
-
-pub struct TokenInitializeConfig {
-    name: str[32],
-    symbol: str[8],
-    decimals: u8,
-}
-
-
-storage {
-    config: TokenInitializeConfig = TokenInitializeConfig {
-        name: "                                ",
-        symbol: "        ",
-        decimals: 1u8,
-    },
-    owner: Address = Address {
-        value: ZERO_B256,
-    },
-    mint_amount: u64 = 0,
-    mint_list: StorageMap<Address, bool> = StorageMap {},
-}
-
-enum Error {
-    AddressAlreadyMint: (),
-    CannotReinitialize: (),
-    MintIsClosed: (),
-    NotOwner: (),
-}
-
-pub fn get_msg_sender_address_or_panic() -> Address {
-    let sender: Result<Identity, AuthError> = msg_sender();
-    if let Identity::Address(address) = sender.unwrap() {
-        address
-    } else {
-        revert(0);
-    }
-}
-
-#[storage(read)]
-fn validate_owner() {
-    let sender = get_msg_sender_address_or_panic();
-    require(storage.owner == sender, Error::NotOwner);
-}
-
-impl Token for Contract {
-    //////////////////////////////////////
-    // Owner methods
-    //////////////////////////////////////
-    #[storage(read, write)]
-    fn initialize(config: TokenInitializeConfig, mint_amount: u64, owner: Address) {
-        require(storage.owner.into() == ZERO_B256, Error::CannotReinitialize);
-        storage.owner = owner;
-        storage.mint_amount = mint_amount;
-        storage.config = config;
-    }
-
-    #[storage(read, write)]
-    fn set_mint_amount(mint_amount: u64) {
-        validate_owner();
-        storage.mint_amount = mint_amount;
-    }
-
-    #[storage(read)]
+impl NativeAssetToken for Contract {
+    /// Mint an amount of this contracts native asset to the contracts balance.
     fn mint_coins(mint_amount: u64) {
-        validate_owner();
-        mint(mint_amount);
+        mint(ZERO_B256, mint_amount);
     }
 
-    #[storage(read)]
+    /// Burn an amount of this contracts native asset.
     fn burn_coins(burn_amount: u64) {
-        validate_owner();
-        burn(burn_amount);
+        burn(ZERO_B256, burn_amount);
     }
 
-    #[storage(read)]
-    fn transfer_coins(coins: u64, address: Address) {
-        validate_owner();
-        transfer_to_address(coins, contract_id(), address);
+    /// Transfer coins to a target contract.
+    fn force_transfer_coins(coins: u64, asset_id: AssetId, target: ContractId) {
+        force_transfer_to_contract(target, asset_id, coins);
     }
 
-    #[storage(read)]
-    fn transfer_token_to_output(coins: u64, asset_id: ContractId, address: Address) {
-        validate_owner();
-        transfer_to_address(coins, asset_id, address);
+    /// Transfer coins to a transaction output to be spent later.
+    fn transfer_coins_to_output(coins: u64, asset_id: AssetId, recipient: Address) {
+        transfer_to_address(recipient, asset_id, coins);
     }
 
-    //////////////////////////////////////
-    // Mint public method
-    //////////////////////////////////////
-    #[storage(read, write)]
-    fn mint() {
-        require(storage.mint_amount > 0, Error::MintIsClosed);
-
-        // Enable a address to mint only once
-        let sender = get_msg_sender_address_or_panic();
-        require(storage.mint_list.get(sender) == false, Error::AddressAlreadyMint);
-
-        storage.mint_list.insert(sender, true);
-        mint_to_address(storage.mint_amount, sender);
+    /// Get the internal balance of a specific coin at a specific contract.
+    fn get_balance(target: ContractId, asset_id: AssetId) -> u64 {
+        balance_of(target, asset_id)
     }
 
-    //////////////////////////////////////
-    // Read-Only methods
-    //////////////////////////////////////
-    #[storage(read)]
-    fn get_mint_amount() -> u64 {
-        storage.mint_amount
+    /// Deposit tokens back into the contract.
+    fn deposit() {
+        assert(msg_amount() > 0);
     }
 
-    fn get_balance() -> u64 {
-        balance_of(contract_id(), contract_id())
+    /// Mint and send this contracts native token to a destination contract.
+    fn mint_and_send_to_contract(amount: u64, destination: ContractId) {
+        mint_to_contract(destination, ZERO_B256, amount);
     }
 
-    fn get_token_balance(asset_id: ContractId) -> u64 {
-        balance_of(asset_id, contract_id())
-    }
-    #[storage(read)]
-    fn config() -> TokenInitializeConfig {
-        storage.config
-    }
-
-    #[storage(read)]
-    fn already_minted(address: Address) -> bool{
-        storage.mint_list.get(address)
+    /// Mind and send this contracts native token to a destination address.
+    fn mint_and_send_to_address(amount: u64, recipient: Address) {
+        mint_to_address(recipient, ZERO_B256, amount);
     }
 }
