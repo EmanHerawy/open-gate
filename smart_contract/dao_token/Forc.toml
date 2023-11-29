@@ -5,6 +5,7 @@ license = "Apache-2.0"
 name = "dao_token"
 
 [dependencies]
+ownership = { path = "../ownership" }
 token = { git = "https://github.com/FuelLabs/sway-libs", tag = "v0.17.1" }
-ownership = { git = "https://github.com/FuelLabs/sway-libs", tag = "v0.17.1" }
+# ownership = { git = "https://github.com/FuelLabs/sway-libs", tag = "v0.17.1" }
 src_5 = { git = "https://github.com/FuelLabs/sway-standards", tag = "v0.1.1" }
