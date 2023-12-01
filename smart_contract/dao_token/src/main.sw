@@ -7,14 +7,19 @@ use ownership::{
     Ownable,
 };
 abi NativeAssetToken {
-    // fn name ()->str;
-    // fn symbol ()->str;
-    // fn decimal ()->u64;
+    fn name ()->str;
+    fn symbol ()->str;
+    fn decimal ()->u64;
+      #[storage(read, write)]
     fn mint(mint_amount: u64);
+      #[storage(read, write)]
     fn burn(burn_amount: u64);
+      #[storage(read, write)]
     fn transfer(coins: u64, asset_id: AssetId, target: ContractId);
+     #[storage(read, write)]
     fn transfer_from(coins: u64, asset_id: AssetId, recipient: Address);
     fn deposit();
+      #[storage(read)]
     fn balance_of(target: ContractId, asset_id: AssetId) -> u64;
     
     fn buy_token(amount: u64, destination: ContractId);
@@ -22,9 +27,11 @@ abi NativeAssetToken {
 }
 storage {
 //   allowlist: StorageMap<Identity, bool> = StorageMap{},
-//   initialized: bool = false,
+  initialized: bool = false,
 //    owner: Address = Address::from(ZERO_B256),
    owner: Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
+      
+
  
 }
 impl Ownable for Contract {
@@ -46,27 +53,48 @@ impl Ownable for Contract {
     }
 }
 impl NativeAssetToken for Contract {
+
+    /// @dev @notice , for some reason, the compiler is not allowing me to set as storage variable 
+    /// Get the name of this token.
+    fn name() -> str {
+        "Native Asset Token"
+    }
+    /// Get the symbol of this token.
+    fn symbol() -> str {
+        "NAT"
+    }
+    /// Get the decimal of this token.
+    fn decimal() -> u64 {
+        18
+    }
+
+
     /// Mint an amount of this contracts native asset to the contracts balance.
+   #[storage(read, write)]
     fn mint(mint_amount: u64) {
         mint(ZERO_B256, mint_amount);
     }
 
     /// Burn an amount of this contracts native asset.
+     #[storage(read, write)]
     fn burn(burn_amount: u64) {
         burn(ZERO_B256, burn_amount);
     }
 
     /// Transfer coins to a target contract.
+     #[storage(read, write)]
     fn transfer(coins: u64, asset_id: AssetId, target: ContractId) {
         force_transfer_to_contract(target, asset_id, coins);
     }
 
     /// Transfer coins to a transaction output to be spent later.
+     #[storage(read, write)]
     fn transfer_from(coins: u64, asset_id: AssetId, recipient: Address) {
         transfer_to_address(recipient, asset_id, coins);
     }
 
     /// Get the internal balance of a specific coin at a specific contract.
+      #[storage(read)]
     fn balance_of(target: ContractId, asset_id: AssetId) -> u64 {
         balance_of(target, asset_id)
     }
