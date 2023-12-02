@@ -11,12 +11,18 @@ abi Registration {
     fn initialize(new_owner: Option<Identity>);
    
 }
+
 storage {
 //   allowlist: StorageMap<Identity, bool> = StorageMap{},
-  initialized: bool = false,
-//    owner: Address = Address::from(ZERO_B256),
+   initialized: bool = false,
+   daoToken: ContractId= ContractId::from(ZERO_B256),
+   blanceToJoin: u64 = 0,
    owner: Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
-      
+
+        //  github_to_Address: StorageMap<str, Identity> = StorageMap{},
+        // address_to_Github : StorageMap<Identity, str> = StorageMap{},
+        // creator_Registrated_Time: StorageMap<Identity, u64> = StorageMap{},
+
 
  
 }
