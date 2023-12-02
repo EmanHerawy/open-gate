@@ -7,6 +7,8 @@ use ownership::{
     Ownable,
 };
 abi NativeAssetToken {
+    #[storage(read,write)]
+    fn initialize(new_owner: Option<Identity>);
     fn name ()->str;
     fn symbol ()->str;
     fn decimal ()->u64;
@@ -53,7 +55,14 @@ impl Ownable for Contract {
     }
 }
 impl NativeAssetToken for Contract {
-
+    /// Initialize the contract.
+    /// Reverts if the contract is already initialized.
+    #[storage(read,write)]
+    fn initialize(new_owner: Option<Identity>) {
+        assert(!storage.initialized.read());
+        storage.initialized.write( true);
+        storage.owner.write(new_owner);
+    }
     /// @dev @notice , for some reason, the compiler is not allowing me to set as storage variable 
     /// Get the name of this token.
     fn name() -> str {
