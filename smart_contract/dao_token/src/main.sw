@@ -6,7 +6,7 @@ use ownership::{
     log_ownership_transferred,
     Ownable,
 };
-abi NativeAssetToken {
+  abi TokenABI {
     #[storage(read,write)]
     fn initialize(new_owner: Option<Identity>);
     fn name ()->str;
@@ -17,9 +17,9 @@ abi NativeAssetToken {
       #[storage(read, write)]
     fn burn(burn_amount: u64);
       #[storage(read, write)]
-    fn transfer(coins: u64, asset_id: AssetId, target: ContractId);
+    fn force_transfer_to_contract(coins: u64, asset_id: AssetId, target: ContractId);
      #[storage(read, write)]
-    fn transfer_from(coins: u64, asset_id: AssetId, recipient: Address);
+    fn transfer_to_address(coins: u64, asset_id: AssetId, recipient: Address);
     fn deposit();
       #[storage(read)]
     fn balance_of(target: ContractId, asset_id: AssetId) -> u64;
@@ -54,7 +54,7 @@ impl Ownable for Contract {
          log_ownership_transferred(old_owner, new_owner);
     }
 }
-impl NativeAssetToken for Contract {
+impl TokenABI for Contract {
     /// Initialize the contract.
     /// Reverts if the contract is already initialized.
     #[storage(read,write)]
@@ -74,7 +74,10 @@ impl NativeAssetToken for Contract {
     }
     /// Get the decimal of this token.
     fn decimal() -> u64 {
-        18
+        // Those tokens are 9 decimals because Fuel’s native asset system works on a 64-bit word size, that word size means you can’t do an 18 decimal token, it has to be about half that for native assets on Fuel.
+        // ref: https://forum.fuel.network/t/is-there-any-article-about-token-in-fuel-network/1121/7
+
+        9
     }
 
 
@@ -92,13 +95,13 @@ impl NativeAssetToken for Contract {
 
     /// Transfer coins to a target contract.
      #[storage(read, write)]
-    fn transfer(coins: u64, asset_id: AssetId, target: ContractId) {
+    fn force_transfer_to_contract(coins: u64, asset_id: AssetId, target: ContractId) {
         force_transfer_to_contract(target, asset_id, coins);
     }
 
     /// Transfer coins to a transaction output to be spent later.
      #[storage(read, write)]
-    fn transfer_from(coins: u64, asset_id: AssetId, recipient: Address) {
+    fn transfer_to_address(coins: u64, asset_id: AssetId, recipient: Address) {
         transfer_to_address(recipient, asset_id, coins);
     }
 
