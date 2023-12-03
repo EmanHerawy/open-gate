@@ -22,5 +22,4 @@ pub enum UserError {
     IncorrectAssetSent: (),
     /// The user does not have enough balance to perform the action.
     InsufficientBalance: (),
- 
 }

@@ -23,9 +23,5 @@ impl Eq for State {
     }
 }
 
-pub struct TokenInitializeConfig {
-    name: str[32],
-    symbol: str[8],
-    decimals: u8,
-}
+
  
