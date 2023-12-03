@@ -1,11 +1,12 @@
-import { useFuel } from '@fuel-wallet/react';
-import { useConnect, isConnected } from '@fuel-wallet/react';
+import { useConnect, useIsConnected } from '@fuel-wallet/react';
 
 export default function ConnectButton() {
   const { connect } = useConnect();
+  const { isConnected } = useIsConnected()
 
 const connectWallet = async () => {
-    try {
+  try {
+    console.log({ isConnected });
       await  connect();
     } catch (error) {
       console.error(error);

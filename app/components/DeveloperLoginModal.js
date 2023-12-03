@@ -33,9 +33,7 @@ export default function LoginModal({ onClose, open }) {
     // Creates a transactions to call the increment function
     // because it creates a TX and updates the contract state this requires the wallet to have enough coins to cover the costs and also to sign the Transaction
     try {
-      await contract.functions.join_as_contributor().callParams({
-        github_username: session?.user.name
-      })        .call();
+      await contract.functions.join_as_contributor( session?.user.name)        .call();
       onClose()
     } catch (error) {
       console.error(error)
