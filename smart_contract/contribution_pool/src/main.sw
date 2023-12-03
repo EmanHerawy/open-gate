@@ -16,7 +16,7 @@ use std::{
 };
 
 use ::data_structures::{Listing, State};
-use ::interface::{ContractABI,CalleeTokenContract};
+use ::interface::{ContractABI,CalleeTokenContract,RegistrationAbi};
 use ::events::{ClaimedEvent,RequestedEvent};
 use ::errors::{InitializationError, UserError};
 
@@ -51,8 +51,14 @@ impl ContractABI for Contract{
     }
     #[storage(read, write), payable]
     fn list_repo(github_repo:str[1], payable_amount:u64){
+        require(storage.state.read() == State::Initialized,InitializationError::CannotReinitialize);
+        require(payable_amount > 0, UserError::AmountCannotBeZero);
        require(BASE_ASSET_ID == msg_asset_id(), UserError::IncorrectAssetSent);
-
+        // sould join first 
+        // call registration contract to check if the user is registered
+        let registration = abi(RegistrationAbi, storage.registration.read().into());
+        let is_registered = registration.is_project_creator_registered(msg_sender().unwrap());
+        require(is_registered == true, UserError::NotRegistered);
         storage.counter.write(storage.counter.read() + 1);
         let new_listing = Listing{
            listing_id: storage.counter.read(),

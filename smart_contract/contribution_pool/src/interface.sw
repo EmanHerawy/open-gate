@@ -12,6 +12,12 @@ abi ContractABI {
 
   
 }
+abi RegistrationAbi {
+   
+    #[storage(read)]
+    fn is_project_creator_registered(creator_address: Identity) -> bool;
+  
+}
 abi CalleeTokenContract {
     #[storage(read)]
     fn user_balance(user: Identity) -> u64;

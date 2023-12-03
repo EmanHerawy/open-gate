@@ -23,4 +23,5 @@ pub enum UserError {
     /// The user does not have enough balance to perform the action.
     InsufficientBalance: (),
     RequestAlreadyUsed: (),
+    NotRegistered: (),
 }
