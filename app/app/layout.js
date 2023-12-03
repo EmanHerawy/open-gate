@@ -8,9 +8,9 @@ import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry'
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
 import { SessionProvider } from 'next-auth/react'
+import { FuelProvider } from '@fuel-wallet/react';
 
-import { Web3Modal } from '@/context/Web3modal'
-
+ 
 // export const metadata = {
 //   title: 'Open Gate',
 //   description: 'Open Gate',
@@ -24,7 +24,8 @@ export default function RootLayout({ children, session }) {
       <body>
         <SessionProvider session={session}>
           <ThemeRegistry>
-            <Web3Modal>
+            <FuelProvider>
+
               <Topbar />
               <Sidebar width={DRAWER_WIDTH} />
 
@@ -40,7 +41,7 @@ export default function RootLayout({ children, session }) {
               >
                 {children}
               </Box>
-            </Web3Modal>
+            </FuelProvider>
           </ThemeRegistry>
         </SessionProvider>
       </body>

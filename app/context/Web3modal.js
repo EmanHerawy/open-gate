@@ -1,7 +1,7 @@
 'use client'
 
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
-
+ 
 import { WagmiConfig } from 'wagmi'
 import { polygonMumbai, avalancheFuji } from 'viem/chains'
 

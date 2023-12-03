@@ -11,11 +11,12 @@ import DeveloperLoginModal from './DeveloperLoginModal'
 import OrganizationLoginModal from './OrganizationLoginModal'
 import { useSession } from 'next-auth/react'
 
-import { useAccount } from 'wagmi'
+import { useIsConnected } from '@fuel-wallet/react';
 
 export default function Topbar() {
   const { data: session } = useSession()
-  const { isConnected } = useAccount()
+  const { isConnected } = useIsConnected();
+
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
