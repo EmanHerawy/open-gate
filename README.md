@@ -80,6 +80,13 @@ Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations
 - **Multi-Chain Support**: Flexibility across different blockchain platforms.
 - **Tailored DAO Journeys**: Customizable paths for different DAO models.
 
+## Contract Architecture
+   - **token_dao**: the contract act as a gate key to join any dao, usage inside any dao depends on the dao economy. This contract is developed  as an example , but feel free to use it in your own token. keep in mind that `contributor_pool` contract should be able to mint token for you custom designed token. 
+   - **contributor_pool**: the contract is responsible for minting token for contributors. it is designed to be used in any dao. it is the core of the project. This contract should handle the relation between open source project creator and open source project contributors.
+      - personas : The core functionality is to enable  Creators to list their github repos, set how the deposit that they will be paid , once the contributor create PR and close the issue , the contract release the payment to the contributor and mint DAO token to the contributors
+   - **registration**: the contract is responsible for registering  developers/contributors and project creators. The contract requires that project creators hold a certain amount of DAO token to be able to create a project. Developers/contributors  are not required to hold DAO token to be able to contribute to a project. In fact, the main role of this tool is to give them free token based on their contribution.
+   - **ownership**: the library is responsible for managing the ownership of the contracts. it is used to transfer the ownership of the contracts to the DAO token holders.
+   - **token_gated_dao**: this contract is cloned from sawy example. Normal DAO contract that only allows token holders to vote. cloned for demonstration purposes.
 
 ## Getting Started
 
