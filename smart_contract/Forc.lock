@@ -1,4 +1,9 @@
 [[package]]
+name = "contribution_pool"
+source = "member"
+dependencies = ["std"]
+
+[[package]]
 name = "core"
 source = "path+from-root-BD9159206068AEC6"
 
@@ -7,27 +12,27 @@ name = "dao_token"
 source = "member"
 dependencies = [
     "ownership",
-    "src_5 git+https://github.com/FuelLabs/sway-standards?tag=v0.1.1#5a85090678f3a9deb7040424d4ee502d3d9f5bcf",
+    "src_5",
     "std",
     "token",
 ]
 
 [[package]]
 name = "ownership"
-source = "git+https://github.com/FuelLabs/sway-libs?tag=v0.17.1#ad2f935df0e8e12bad003b17e4334b553a8511d4"
+source = "path+from-root-AEF3075144DE4ABA"
+dependencies = ["std"]
+
+[[package]]
+name = "registration"
+source = "member"
 dependencies = [
-    "src_5 git+https://github.com/FuelLabs/sway-standards?tag=v0.2.0#29cb3a4ad318d847b17936c245b525c1bee3382d",
+    "ownership",
     "std",
 ]
 
 [[package]]
 name = "src_5"
 source = "git+https://github.com/FuelLabs/sway-standards?tag=v0.1.1#5a85090678f3a9deb7040424d4ee502d3d9f5bcf"
-dependencies = ["std"]
-
-[[package]]
-name = "src_5"
-source = "git+https://github.com/FuelLabs/sway-standards?tag=v0.2.0#29cb3a4ad318d847b17936c245b525c1bee3382d"
 dependencies = ["std"]
 
 [[package]]

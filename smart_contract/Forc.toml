@@ -1,5 +1,8 @@
 [workspace]
 members = [
  "dao_token",
- "registration"
+ "registration",
+#  "token_gated_dao",
+ "contribution_pool"
+
 ]
