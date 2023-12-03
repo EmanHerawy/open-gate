@@ -1,38 +1,24 @@
 contract;
+mod data_structures;
+mod interface;
+mod errors;
 
-use std::{constants::ZERO_B256, context::*, token::*};
+use std::{constants::{ZERO_B256,BASE_ASSET_ID}, context::*, token::*, hash::*,    call_frames::msg_asset_id,
+};
 use ownership::{
     require_msg_sender,
     log_ownership_transferred,
     Ownable,
 };
-  abi TokenABI {
-    #[storage(read,write)]
-    fn initialize(new_owner: Option<Identity>);
-    fn name ()->str;
-    fn symbol ()->str;
-    fn decimal ()->u64;
-      #[storage(read, write)]
-    fn mint(mint_amount: u64);
-      #[storage(read, write)]
-    fn burn(burn_amount: u64);
-      #[storage(read, write)]
-    fn force_transfer_to_contract(coins: u64, asset_id: AssetId, target: ContractId);
-     #[storage(read, write)]
-    fn transfer_to_address(coins: u64, asset_id: AssetId, recipient: Address);
-    fn deposit();
-      #[storage(read)]
-    fn balance_of(target: ContractId, asset_id: AssetId) -> u64;
-    
-    fn buy_token(amount: u64, destination: ContractId);
-    fn buy_token_for(amount: u64, recipient: Address);
-}
+use ::data_structures::{ State};
+use :: interface::{TokenABI};
+use ::errors::{ InitializationError,UserError};
+
 storage {
-//   allowlist: StorageMap<Identity, bool> = StorageMap{},
-  initialized: bool = false,
-//    owner: Address = Address::from(ZERO_B256),
-   owner: Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
-      
+    owner: Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
+   balances: StorageMap<Identity, u64> = StorageMap {},
+   state: State = State::NotInitialized,
+    total_supply: u64 = 0,
 
  
 }
@@ -54,16 +40,48 @@ impl Ownable for Contract {
          log_ownership_transferred(old_owner, new_owner);
     }
 }
-impl TokenABI for Contract {
-    /// Initialize the contract.
-    /// Reverts if the contract is already initialized.
-    #[storage(read,write)]
-    fn initialize(new_owner: Option<Identity>) {
-        assert(!storage.initialized.read());
-        storage.initialized.write( true);
-        storage.owner.write(new_owner);
+impl TokenABI for Contract{
+        #[storage(read, write)]
+    fn constructor(_owner: Option<Identity>) {
+        require(storage.state.read() == State::NotInitialized, InitializationError::CannotReinitialize);
+        // Start the next message to be signed
+          storage.state.write( State::Initialized);
+        storage.owner.write(_owner);
     }
-    /// @dev @notice , for some reason, the compiler is not allowing me to set as storage variable 
+     
+
+    #[storage(read)]
+    fn total_supply() -> u64 {
+        storage.total_supply.read()
+    }
+
+      #[payable]
+    #[storage(read, write)]
+    fn buy_token() {
+        require(storage.state.read() == State::Initialized, InitializationError::ContractNotInitialized);
+        require(BASE_ASSET_ID == msg_asset_id(), UserError::IncorrectAssetSent);
+        require(0 < msg_amount(), UserError::AmountCannotBeZero);
+        let user = msg_sender().unwrap();
+           match user {
+            Identity::Address(address) => mint_to_address(address, ZERO_B256, msg_amount()),
+            Identity::ContractId(contract_id) => mint_to_contract(contract_id, ZERO_B256, msg_amount()),
+        };
+
+        storage.balances.insert(user, msg_amount() + storage.balances.get(user).try_read().unwrap_or(0));
+        storage.total_supply.write(storage.total_supply.read() + msg_amount());
+    
+    }
+
+    #[storage(read)]
+    fn user_balance(user: Identity) -> u64 {
+        storage.balances.get(user).try_read().unwrap_or(0)
+    }
+
+
+
+
+    ///// ***********************/////
+      /// @dev @notice , for some reason, the compiler is not allowing me to set as storage variable 
     /// Get the name of this token.
     fn name() -> str {
         "Native Asset Token"
@@ -79,50 +97,23 @@ impl TokenABI for Contract {
 
         9
     }
+ 
 
+    /// transfer token 
+    #[storage(read, write)]
+    fn transfer(to: Identity, amount: u64,token_id: AssetId) {
+        require(storage.state.read() == State::Initialized, InitializationError::ContractNotInitialized);
+        require(0 < amount, UserError::AmountCannotBeZero);
+        let from = msg_sender().unwrap();
+        let from_balance = storage.balances.get(from).try_read().unwrap_or(0);
+        require(amount <= from_balance, UserError::InsufficientBalance);
+        storage.balances.insert(from, from_balance - amount);
+        storage.balances.insert(to, amount + storage.balances.get(to).try_read().unwrap_or(0));
+        match to {
+            Identity::Address(address) => transfer_to_address(address, token_id, amount),
+            Identity::ContractId(contract_id) => force_transfer_to_contract(contract_id, token_id, amount),
+        };
 
-    /// Mint an amount of this contracts native asset to the contracts balance.
-   #[storage(read, write)]
-    fn mint(mint_amount: u64) {
-        mint(ZERO_B256, mint_amount);
     }
 
-    /// Burn an amount of this contracts native asset.
-     #[storage(read, write)]
-    fn burn(burn_amount: u64) {
-        burn(ZERO_B256, burn_amount);
-    }
-
-    /// Transfer coins to a target contract.
-     #[storage(read, write)]
-    fn force_transfer_to_contract(coins: u64, asset_id: AssetId, target: ContractId) {
-        force_transfer_to_contract(target, asset_id, coins);
-    }
-
-    /// Transfer coins to a transaction output to be spent later.
-     #[storage(read, write)]
-    fn transfer_to_address(coins: u64, asset_id: AssetId, recipient: Address) {
-        transfer_to_address(recipient, asset_id, coins);
-    }
-
-    /// Get the internal balance of a specific coin at a specific contract.
-      #[storage(read)]
-    fn balance_of(target: ContractId, asset_id: AssetId) -> u64 {
-        balance_of(target, asset_id)
-    }
-
-    /// Deposit tokens back into the contract.
-    fn deposit() {
-        assert(msg_amount() > 0);
-    }
-
-    /// Mint and send this contracts native token to a destination contract.
-    fn buy_token(amount: u64, destination: ContractId) {
-        mint_to_contract(destination, ZERO_B256, amount);
-    }
-
-    /// Mind and send this contracts native token to a destination address.
-    fn buy_token_for(amount: u64, recipient: Address) {
-        mint_to_address(recipient, ZERO_B256, amount);
-    }
 }
