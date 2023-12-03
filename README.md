@@ -22,11 +22,11 @@ Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations
 
 - **Target Users**: Enthusiastic Contributors and Open-source Project Owners.
 - **Key Features**:
-  - Instant payment per contributions.
+- Instant payment per contributions.
   - Trustless connections ensuring security and reliability.
   - Multi-chain support, enhancing versatility.
   - Diverse DAO journeys, catering to various user needs.
-- **Technologies Used**: Advanced technologies including Chainlink functions, Hardhat, Solidly, Fe, Ethers.js, OpenZeppelin, coupled with a robust frontend built using Next.js, React, and Web3Modal integrated with Wagmi.
+- **Technologies Used**: sway, fuel sdk.
 - **Modular Integration**: Effortlessly integrate with any DAO structure.
 
 ## User Journey
@@ -36,7 +36,6 @@ Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations
 1. **Seamless Integration**: Login with GitHub, connect your crypto wallet, and establish a unique developer account on the blockchain using the GitHub username.
 2. **Contribute and Engage**: Apply your skills to contribute to selected open-source projects, automatically linked to the user profile.
 3. **Reward Mechanism**: After successful pull request acceptance:
-   - Utilize a specialized Chainlink function to verify merged PRs.
    - Earn tokens for each contribution.
    - Promptly claim your rewards post-verification.
 
@@ -77,6 +76,7 @@ Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations
 - **Multi-Chain Support**: Flexibility across different blockchain platforms.
 - **Tailored DAO Journeys**: Customizable paths for different DAO models.
 
+
 ## Getting Started
 
 **Install Node Dependencies**
@@ -88,29 +88,13 @@ npm install
 ```bash
 npm run dev
 ```
+**build the contract**
+```bash
+forc build
+```
 
-## Technology Stack
 
-### Smart Contracts
-
-- **Hardhat**: Streamlining contract deployment and testing on Ethereum.
-- **Ethers.js**: Simplifying interactions with the Ethereum blockchain.
-- **OpenZeppelin**: Providing robust, secure smart contract templates.
-
-### Application Layer
-
-- **Next.js & React**: Crafting dynamic, high-performance web interfaces.
-- **Web3Modal with Wagmi**: Streamlining Ethereum transactions.
-- **MUI (Material-UI)**: Designing intuitive, responsive user interfaces.
-
-## Target Sponsors
-
-- [Nouns DAO](https://ethglobal.com/events/istanbul/prizes#nouns-dao)
-- [Chainlink](https://ethglobal.com/events/istanbul/prizes#chainlink)
-- [Ethereum Foundation](https://ethglobal.com/events/istanbul/prizes#ethereum-foundation)
-- [Walletconnect](https://ethglobal.com/events/istanbul/prizes#walletconnect)
-- [MetaMask](https://ethglobal.com/events/istanbul/prizes#metamask)
-
+ 
 ## Future Work
 
 1. **Improved User Experience (UX) and User Journey**:
@@ -128,11 +112,37 @@ npm run dev
 
 5. **Automated Pull Request Tracking**:
    - Utilizing Chainlink's automation functions, we aim to automate the tracking and verification of pull requests, thereby enhancing the efficiency of contribution recognition and reward distribution.
+5. **On-chain check**:
+   - Utilizing Chainlink's functions, we aim to  check and verify the pull requests, thereby enhancing the efficiency of contribution recognition and reward distribution.
+   - OR ZK Email integration or any similar projects in Fuel network ecosystem.
+
 
 6. **Collaborative Community Hub**:
    - **Integrated Networking and Job Opportunities**: A networking section will be added for collaboration and job opportunities, connecting developers with projects and roles that match their skills.
    - **Community Forums**: These will serve as platforms for knowledge exchange, discussions, and community support, enriching the collaborative spirit of the ecosystem.
 
+
+
+## Deployed contracts 
+> Contract dao_token Deployed!
+
+    Network: https://beta-4.fuel.network
+    Contract ID: 0x60245c4b9dce24af257b7e83844fb037f83def447fe77d6e16cec06948e0ab0c
+    Deployed in block 0x33a82764a84f75f6c1c25cfb76c6a7da61d900b7f7e3d92fe4dd6b3b60939e37
+
+
+> Contract registration Deployed!
+
+    Network: https://beta-4.fuel.network
+    Contract ID: 0x76aa2e129f2eee4b0c531431358161bb478fbfae1798d648fe3f1f2f01cbb990
+    Deployed in block 0x4cd4c4ae3176f731e7235c699914f3308d2a97cf73f0a173dcc574e18b74a7e5
+
+> Contract contribution_pool Deployed!
+
+    Network: https://beta-4.fuel.network
+    Contract ID: 0xf364a2fc439a10367719b6fbd682be4f32adca7e2829132324072081bf1cb086
+    Deployed in block 0xadf71f7c75fc3f7de05268088c501748793e80a47489236c9781445c5f7e2121
 ## License
 
 MIT
+
