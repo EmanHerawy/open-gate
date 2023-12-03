@@ -21,7 +21,7 @@ const connectWallet = async () => {
             
             </>
           ) : (
-              <button style={buttonStyle} onClick={connectWallet}>Connect</button>
+              <button  onClick={connectWallet}>Connect</button>
           )
         }
       </div>
