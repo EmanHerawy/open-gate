@@ -32,4 +32,8 @@ abi TokenABI {
 
     #[storage(read, write)]
     fn transfer(to: Identity, amount: u64, token_id: AssetId);
+    #[storage(read, write)]
+    fn mint_token(to: Identity, amount: u64);
+    #[storage(read, write)]
+    fn set_minter(minter: Identity);
 }

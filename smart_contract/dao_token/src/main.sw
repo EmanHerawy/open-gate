@@ -20,6 +20,8 @@ use ::errors::{InitializationError, UserError};
 storage {
     owner: 
 Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
+    minter: 
+Option<Identity> = Some(Identity::Address(Address::from(ZERO_B256))),
     balances: StorageMap<Identity, u64> = StorageMap {},
     state: State = State::NotInitialized,
     total_supply: u64 = 0,
@@ -36,8 +38,7 @@ impl Ownable for Contract {
     fn transfer_ownership(new_owner: Option<Identity>) {
         let old_owner = storage.owner.read();
         require_msg_sender(old_owner);
-        storage.owner.
-write(new_owner);
+        storage.owner.write(new_owner);
         log_ownership_transferred(old_owner, new_owner);
     }
 }
@@ -91,6 +92,20 @@ read)]
         // ref: https://forum.fuel.network/t/is-there-any-article-about-token-in-fuel-network/1121/7
         9
     }
+        #[storage(read, write)]
+    fn mint_token(to: Identity, amount: u64){
+        // should only be called by minter 
+        require(storage.minter.read().is_some() && storage.minter.read().unwrap() == msg_sender().unwrap(), "!minter");
+        require(storage.state.read() == State::Initialized, InitializationError::ContractNotInitialized);
+        require(0 < amount, UserError::AmountCannotBeZero);
+        storage.balances.insert(to, amount + storage.balances.get(to).try_read().unwrap_or(0));
+        storage.total_supply.write(storage.total_supply.read() + amount);
+        match to {
+            Identity::Address(address) => mint_to_address(address, ZERO_B256, amount),
+            Identity::ContractId(contract_id) => mint_to_contract(contract_id, ZERO_B256, amount),
+        };
+
+    }
     /// transfer token
     #[storage(read, write)]
     fn transfer(to: Identity, amount: u64, token_id: AssetId) {
@@ -106,4 +121,14 @@ read)]
             Identity::ContractId(contract_id) => force_transfer_to_contract(contract_id, token_id, amount),
         };
     }
+
+
+     #[storage(read, write)]
+    fn set_minter(minter: Identity){
+        require(storage.state.read() == State::Initialized, InitializationError::ContractNotInitialized);
+     require_msg_sender(Some(msg_sender().unwrap()));
+     storage.minter.write(Some(minter));
+    }
+
 }
+
