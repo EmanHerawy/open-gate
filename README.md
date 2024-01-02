@@ -1,5 +1,5 @@
 # Open Gate
-
+[![Ceasefire Now](https://badge.techforpalestine.org/ceasefire-now)](https://techforpalestine.org/learn-more)
 ## Introduction
 
 Open Gate revolutionizes the landscape of Decentralized Autonomous Organizations (DAOs) by offering a tailored solution for permissioned access. Leveraging Proof of Contribution, it fosters a seamless, inclusive environment for token-gated communities. Our mission is to seamlessly bridge the divide between open-source contributions and equitable reward systems, catalyzing an engaged, diverse ecosystem.
